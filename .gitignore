@@ -1,0 +1,40 @@
+# Node modules
+node_modules
+
+# Dependency directories
+/.pnp
+/.pnp.js
+
+# Bun
+bun.lockb
+
+# Build output
+/dist
+/build
+/.vite
+/.cache
+/.turbo
+
+# Environment files
+.env
+.env.*
+
+# Local and IDE files
+.DS_Store
+.vscode/
+.idea/
+*.log
+
+# Supabase local state
+.supabase
+
+# Misc
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Local OS files
+Thumbs.db
