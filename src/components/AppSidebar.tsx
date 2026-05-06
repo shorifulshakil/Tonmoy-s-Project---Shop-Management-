@@ -1,9 +1,27 @@
-import { LayoutDashboard, Shirt, Tag, Flame, TrendingUp, Boxes, LogOut } from "lucide-react";
+import {
+  LayoutDashboard,
+  Shirt,
+  Tag,
+  Flame,
+  TrendingUp,
+  Boxes,
+  LogOut,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export type SectionKey = "dashboard" | "products" | "discounted" | "trending" | "daily" | "stock";
+export type SectionKey =
+  | "dashboard"
+  | "products"
+  | "discounted"
+  | "trending"
+  | "daily"
+  | "stock";
 
-const main: { key: SectionKey; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+const main: {
+  key: SectionKey;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+}[] = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { key: "products", label: "Products", icon: Shirt },
   { key: "discounted", label: "Discounted", icon: Tag },
@@ -15,8 +33,16 @@ const reports: typeof main = [
 ];
 
 export function AppSidebar({
-  active, onChange, email, onSignOut,
-}: { active: SectionKey; onChange: (k: SectionKey) => void; email: string; onSignOut: () => void }) {
+  active,
+  onChange,
+  email,
+  onSignOut,
+}: {
+  active: SectionKey;
+  onChange: (k: SectionKey) => void;
+  email: string;
+  onSignOut: () => void;
+}) {
   const initial = (email[0] || "A").toUpperCase();
   return (
     <aside className="fixed left-0 top-0 bottom-0 w-[260px] bg-card border-r border-border z-40 flex flex-col">
@@ -32,9 +58,25 @@ export function AppSidebar({
 
       <nav className="flex-1 py-4 overflow-y-auto">
         <SectionLabel>Main</SectionLabel>
-        {main.map((it) => <NavItem key={it.key} label={it.label} icon={it.icon} active={active === it.key} onClick={() => onChange(it.key)} />)}
+        {main.map((it) => (
+          <NavItem
+            key={it.key}
+            label={it.label}
+            icon={it.icon}
+            active={active === it.key}
+            onClick={() => onChange(it.key)}
+          />
+        ))}
         <SectionLabel className="mt-3">Reports</SectionLabel>
-        {reports.map((it) => <NavItem key={it.key} label={it.label} icon={it.icon} active={active === it.key} onClick={() => onChange(it.key)} />)}
+        {reports.map((it) => (
+          <NavItem
+            key={it.key}
+            label={it.label}
+            icon={it.icon}
+            active={active === it.key}
+            onClick={() => onChange(it.key)}
+          />
+        ))}
       </nav>
 
       <div className="px-5 py-5 border-t border-border flex items-center gap-3">
@@ -42,10 +84,20 @@ export function AppSidebar({
           {initial}
         </div>
         <div className="min-w-0 flex-1">
-          <div className="text-sm font-medium truncate">{email.split("@")[0] || "Admin"}</div>
-          <div className="text-[0.7rem] text-muted-foreground">Store Manager</div>
+          <div className="text-sm font-medium truncate">
+            {email.split("@")[0] || "Admin"}
+          </div>
+          <div className="text-[0.7rem] text-muted-foreground">
+            Store Manager
+          </div>
         </div>
-        <Button variant="ghost" size="icon" onClick={onSignOut} className="text-muted-foreground hover:text-destructive" title="Sign out">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onSignOut}
+          className="text-muted-foreground hover:text-destructive"
+          title="Sign out"
+        >
           <LogOut className="w-4 h-4" />
         </Button>
       </div>
@@ -53,13 +105,33 @@ export function AppSidebar({
   );
 }
 
-function SectionLabel({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <div className={`px-6 pt-2 pb-1.5 text-[0.62rem] tracking-luxe uppercase text-foreground/20 ${className}`}>{children}</div>;
+function SectionLabel({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={`px-6 pt-2 pb-1.5 text-[0.62rem] tracking-luxe uppercase text-foreground/20 ${className}`}
+    >
+      {children}
+    </div>
+  );
 }
 
 function NavItem({
-  label, icon: Icon, active, onClick,
-}: { label: string; icon: React.ComponentType<{ className?: string }>; active: boolean; onClick: () => void }) {
+  label,
+  icon: Icon,
+  active,
+  onClick,
+}: {
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  active: boolean;
+  onClick: () => void;
+}) {
   return (
     <button
       onClick={onClick}

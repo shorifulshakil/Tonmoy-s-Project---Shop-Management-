@@ -14,7 +14,9 @@ const schema = z.object({
 });
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>) => ({ mode: (s.mode as string) === "signup" ? "signup" : "login" }),
+  validateSearch: (s: Record<string, unknown>) => ({
+    mode: (s.mode as string) === "signup" ? "signup" : "login",
+  }),
   component: AuthPage,
   head: () => ({ meta: [{ title: "Sign in — Zebra Outfit" }] }),
 });
@@ -30,24 +32,33 @@ function AuthPage() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const parsed = schema.safeParse({ email, password });
-    if (!parsed.success) { toast.error(parsed.error.issues[0].message); return; }
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0].message);
+      return;
+    }
     setLoading(true);
     try {
       if (isSignup) {
         const { error } = await supabase.auth.signUp({
-          email, password,
+          email,
+          password,
           options: { emailRedirectTo: `${window.location.origin}/dashboard` },
         });
         if (error) throw error;
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
         if (error) throw error;
       }
       navigate({ to: "/dashboard" });
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Authentication failed";
       toast.error(msg);
-    } finally { setLoading(false); }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -62,25 +73,69 @@ function AuthPage() {
         </p>
         <form onSubmit={submit} className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-[0.72rem] tracking-luxe uppercase text-muted-foreground">Email</Label>
-            <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
+            <Label
+              htmlFor="email"
+              className="text-[0.72rem] tracking-luxe uppercase text-muted-foreground"
+            >
+              Email
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoComplete="email"
+            />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-[0.72rem] tracking-luxe uppercase text-muted-foreground">Password</Label>
-            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete={isSignup ? "new-password" : "current-password"} />
+            <Label
+              htmlFor="password"
+              className="text-[0.72rem] tracking-luxe uppercase text-muted-foreground"
+            >
+              Password
+            </Label>
+            <Input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              autoComplete={isSignup ? "new-password" : "current-password"}
+            />
           </div>
-          <Button type="submit" disabled={loading} className="w-full bg-gold text-primary-foreground hover:opacity-90 rounded-sm font-bold tracking-luxe uppercase py-3.5">
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-gold text-primary-foreground hover:opacity-90 rounded-sm font-bold tracking-luxe uppercase py-3.5"
+          >
             <Lock className="w-4 h-4 mr-2" />
-            {loading ? "Please wait…" : isSignup ? "Create Account" : "Secure Login"}
+            {loading
+              ? "Please wait…"
+              : isSignup
+                ? "Create Account"
+                : "Secure Login"}
           </Button>
         </form>
-        <button type="button" onClick={() => setIsSignup((v) => !v)} className="mt-6 text-xs text-muted-foreground hover:text-gold w-full text-center">
-          {isSignup ? "Already have an account? Sign in" : "Need an account? Create one"}
+        <button
+          type="button"
+          onClick={() => setIsSignup((v) => !v)}
+          className="mt-6 text-xs text-muted-foreground hover:text-gold w-full text-center"
+        >
+          {isSignup
+            ? "Already have an account? Sign in"
+            : "Need an account? Create one"}
         </button>
         <p className="text-center text-[0.72rem] text-muted-foreground mt-5">
-          Demo: <span className="text-gold">demo@zebraoutfit.com</span> / <span className="text-gold">ZebraDemo2026!</span>
+          Demo: <span className="text-gold">demo@zebraoutfit.com</span> /{" "}
+          <span className="text-gold">ZebraDemo2026!</span>
         </p>
-        <Link to="/" className="block text-center text-[0.7rem] text-muted-foreground hover:text-gold mt-3 tracking-luxe uppercase">← Back</Link>
+        <Link
+          to="/"
+          className="block text-center text-[0.7rem] text-muted-foreground hover:text-gold mt-3 tracking-luxe uppercase"
+        >
+          ← Back
+        </Link>
       </div>
     </main>
   );
